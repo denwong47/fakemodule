@@ -1,0 +1,1 @@
+from fakemodule.classes import ModuleUnavailable
