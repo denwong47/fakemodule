@@ -1,5 +1,3 @@
-from ast import Import
-
 
 exceptions = (
     ModuleNotFoundError,

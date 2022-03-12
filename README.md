@@ -23,10 +23,13 @@
  This will allow all type hints to ignore the missing module:
  ```
  def func(
-     var:missing_module.some_class,
+     var1:missing_module.some_class,
+     var2:typing.Tuple[
+        missing_module.some_other_class,
+     ]
  )
- # missing_module.some_class now returns itself, which is a ModuleUnavailable class object.
- # However unless you raise it, it will not cause an Exception in itself.
+ # missing_module.some_class now returns type(missing_module), which is the ModuleUnavailable class.
+ # Tuple[] requires everything inside to be a type, hence the class is returned.
  ```
  You can check if the module is available by
  ```

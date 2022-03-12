@@ -1,4 +1,10 @@
-class ModuleUnavailable(ModuleNotFoundError):
+class MetaclassFakeModule(type):
+    def __getattr__(self, attr):
+        # Returns ModuleUnavailable instead of itself.
+        # This allows type hints such as Tuple[] to pass.
+        return ModuleUnavailable
+
+class ModuleUnavailable(ModuleNotFoundError, metaclass=MetaclassFakeModule):
     """
     If a module is not available for some reason, an instance of this class will be returned from any of the @classmethod constructors.
 
@@ -21,4 +27,6 @@ class ModuleUnavailable(ModuleNotFoundError):
         return f"Module Unavailable: Exception [{type(self.exception).__name__}: {str(self.exception)}] reported"
 
     def __getattr__(self, attr):
-        return self
+        # Returns a class instead of itself.
+        # This allows type hints such as Tuple[] to pass.
+        return type(self)
