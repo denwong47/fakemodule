@@ -4,6 +4,11 @@ class MetaclassFakeModule(type):
         # This allows type hints such as Tuple[] to pass.
         return ModuleUnavailable
 
+    def __nonzero__(self):
+        # In case ModuleUnavailable.some_prop is called, return False.
+        return False
+    __bool__ = __nonzero__
+
 class ModuleUnavailable(ModuleNotFoundError, metaclass=MetaclassFakeModule):
     """
     If a module is not available for some reason, an instance of this class will be returned from any of the @classmethod constructors.
