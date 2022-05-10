@@ -2,6 +2,7 @@
  Convenient classes for dealing with optional modules.
 
 ## fakemodule.ModuleUnavailable
+ *Also known as fakemodule.OptionalModule*
  ```python
  fakemodule.ModuleUnavailable(
      exception:Exception,
@@ -11,6 +12,16 @@
  ```
 
  Typically, this is used:
+
+ ```python
+ missing_module = fakemodule.ModuleUnavailable.load("missing_module")
+ # or
+ missing_module = fakemodule.OptionalModule.load("missing_module")
+ # The above are identical
+ ```
+
+ which is functionally equivalent to:
+
  ```python
  try:
     import missing_module

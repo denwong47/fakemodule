@@ -1,3 +1,7 @@
+import importlib
+from types import ModuleType
+from typing import Union
+
 class MetaclassFakeModule(type):
     def __getattr__(self, attr):
         # Returns ModuleUnavailable instead of itself.
@@ -35,3 +39,27 @@ class ModuleUnavailable(ModuleNotFoundError, metaclass=MetaclassFakeModule):
         # Returns a class instead of itself.
         # This allows type hints such as Tuple[] to pass.
         return type(self)
+
+    @classmethod
+    def load(
+        cls,
+        name:str,
+    )->Union[
+        ModuleType,
+        "ModuleUnavailable"
+    ]:
+        """
+        Try loading an optional module, return a ModuleUnavailable if not found.
+
+        Example:
+        ```python
+        np = OptionalModule.load("numpy")
+        ```
+        """
+
+        try:
+            return importlib.import_module(name)
+        except (ImportError, ModuleNotFoundError) as e:
+            return cls(e)
+
+OptionalModule = ModuleUnavailable # Alias to make OptionalModule.load() make a bit more sense
